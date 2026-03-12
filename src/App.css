@@ -59,10 +59,18 @@ body {
   background: var(--bg-light);
   color: var(--dark);
 }
-
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
 #root {
   display: flex;
   min-height: 100vh;
+}
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
 }
 
 /* ===========================
@@ -207,10 +215,12 @@ body {
   padding: 32px;
   overflow-y: auto;
 }
-
 .view-container {
+  flex: 1;
+  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
+  display: flex;
 }
 
 /* ===========================
@@ -303,7 +313,7 @@ button.btn-secondary:hover {
 
 /* Edit Button */
 .btn-edit {
-  background: linear-gradient(135deg, var(--info) 0%, #0891b2 100%);
+  background: linear-gradient(135deg, var(--info) 0%, #0d9488 100%);
   color: var(--white);
   padding: 10px 20px;
   border: none;
@@ -329,7 +339,7 @@ button.btn-secondary:hover {
 
 /* Print Button */
 .btn-print {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
   color: var(--white);
   padding: 10px 20px;
   border: none;
@@ -579,18 +589,18 @@ label:hover {
 }
 
 .status-badge.draft {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
 }
 
 .status-badge.sent {
-  background: #dbeafe;
-  color: #0c2d6b;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
 }
 
 .status-badge.paid {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
 /* ===========================
@@ -891,7 +901,7 @@ textarea:hover {
 }
 
 .btn-print:hover {
-  background: #0891b2;
+  background: var(--info);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
@@ -1282,18 +1292,18 @@ textarea:hover {
 }
 
 .invoice-card.status-draft {
-  border-left-color: #f59e0b;
-  background: linear-gradient(135deg, var(--white) 0%, #fffbeb 100%);
+  border-left-color: var(--warning);
+  background: linear-gradient(135deg, var(--white) 0%, rgba(245, 158, 11, 0.05) 100%);
 }
 
 .invoice-card.status-sent {
-  border-left-color: #3b82f6;
-  background: linear-gradient(135deg, var(--white) 0%, #eff6ff 100%);
+  border-left-color: var(--primary);
+  background: linear-gradient(135deg, var(--white) 0%, rgba(37, 99, 235, 0.05) 100%);
 }
 
 .invoice-card.status-paid {
-  border-left-color: #10b981;
-  background: linear-gradient(135deg, var(--white) 0%, #f0fdf4 100%);
+  border-left-color: var(--success);
+  background: linear-gradient(135deg, var(--white) 0%, rgba(16, 185, 129, 0.05) 100%);
 }
 
 .card-header {
@@ -1330,18 +1340,18 @@ textarea:hover {
 }
 
 .status-badge.draft {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
 }
 
 .status-badge.sent {
-  background: #dbeafe;
-  color: #0c2d6b;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
 }
 
 .status-badge.paid {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
 .card-content {
@@ -1560,23 +1570,23 @@ textarea:hover {
 }
 
 .badge-draft {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
 }
 
 .badge-sent {
-  background: #dbeafe;
-  color: #0c2d6b;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
 }
 
 .badge-paid {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
 .badge-pending {
-  background: #fee2e2;
-  color: #7f1d1d;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
 }
 
 /* ===========================
@@ -1913,6 +1923,272 @@ textarea:hover {
 
 .border-secondary {
   border-color: var(--secondary);
+}
+
+/* ===========================
+   COMPREHENSIVE COLOR SYSTEM
+   =========================== */
+
+/* Button Colors - All buttons use consistent theme */
+.btn-primary,
+.btn-primary-alt {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--white);
+}
+
+.btn-secondary,
+.btn-secondary-alt {
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+  color: var(--white);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+  color: var(--white);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+  color: var(--white);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+  color: var(--white);
+}
+
+.btn-info {
+  background: linear-gradient(135deg, var(--info) 0%, #0d9488 100%);
+  color: var(--white);
+}
+
+/* Text Colors - All text uses consistent theme */
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-info {
+  color: var(--info);
+}
+
+.text-dark {
+  color: var(--dark);
+}
+
+.text-gray {
+  color: var(--gray);
+}
+
+.text-muted {
+  color: var(--gray-light);
+}
+
+/* Background Colors */
+.bg-primary {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.bg-secondary {
+  background: var(--secondary);
+  color: var(--white);
+}
+
+.bg-success {
+  background: var(--success);
+  color: var(--white);
+}
+
+.bg-danger {
+  background: var(--danger);
+  color: var(--white);
+}
+
+.bg-warning {
+  background: var(--warning);
+  color: var(--dark);
+}
+
+.bg-info {
+  background: var(--info);
+  color: var(--white);
+}
+
+.bg-light {
+  background: var(--bg-light);
+  color: var(--dark);
+}
+
+/* Border Colors */
+.border-primary {
+  border-color: var(--primary);
+}
+
+.border-secondary {
+  border-color: var(--secondary);
+}
+
+.border-success {
+  border-color: var(--success);
+}
+
+.border-danger {
+  border-color: var(--danger);
+}
+
+.border-warning {
+  border-color: var(--warning);
+}
+
+.border-info {
+  border-color: var(--info);
+}
+
+/* Icon Colors */
+.icon-primary {
+  color: var(--primary);
+}
+
+.icon-secondary {
+  color: var(--secondary);
+}
+
+.icon-success {
+  color: var(--success);
+}
+
+.icon-danger {
+  color: var(--danger);
+}
+
+.icon-warning {
+  color: var(--warning);
+}
+
+.icon-info {
+  color: var(--info);
+}
+
+/* ===========================
+   CONSISTENT HOVER STATES
+   =========================== */
+
+.btn-primary:hover,
+.btn-primary-alt:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.4);
+}
+
+.btn-secondary:hover,
+.btn-secondary-alt:hover {
+  background: var(--secondary-dark);
+  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4);
+}
+
+.btn-success:hover {
+  background: var(--success-dark);
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
+}
+
+.btn-danger:hover {
+  background: var(--danger-dark);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.4);
+}
+
+.btn-warning:hover {
+  background: var(--warning-dark);
+  box-shadow: 0 8px 16px rgba(245, 158, 11, 0.4);
+}
+
+.btn-info:hover {
+  background: #0d9488;
+  box-shadow: 0 8px 16px rgba(6, 182, 212, 0.4);
+}
+
+/* ===========================
+   BADGE CONSISTENCY
+   =========================== */
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-primary {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
+}
+
+.badge-secondary {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--secondary);
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+.badge-info {
+  background: rgba(6, 182, 212, 0.1);
+  color: var(--info);
+}
+
+/* ===========================
+   LINK COLORS
+   =========================== */
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* ===========================
+   FORM ELEMENT FOCUS COLORS
+   =========================== */
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* ===========================
