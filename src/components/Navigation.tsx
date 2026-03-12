@@ -46,8 +46,8 @@ export function Navigation({ currentView, onNavigate }: NavigationProps) {
 
   return (
     <>
-      <button 
-        className="mobile-menu-toggle" 
+      <button
+        className="mobile-menu-toggle"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         aria-label="Toggle menu"
       >
@@ -55,9 +55,9 @@ export function Navigation({ currentView, onNavigate }: NavigationProps) {
       </button>
 
       {mobileMenuOpen && (
-        <div 
-          className="mobile-menu-overlay" 
-          onClick={() => setMobileMenuOpen(false)} 
+        <div
+          className="mobile-menu-overlay"
+          onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
