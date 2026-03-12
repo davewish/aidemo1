@@ -37,26 +37,50 @@ export const InvoiceCard: React.FC<InvoiceCardProps> = ({
   return (
     <div className={`invoice-card status-${invoice.status}`}>
       <div className="card-header">
-        <h3>{invoice.invoiceNumber}</h3>
+        <div>
+          <h3 className="invoice-number">{invoice.invoiceNumber}</h3>
+          <p className="client-name">
+            📧 {invoice.clientName || "Unnamed Client"}
+          </p>
+        </div>
         <span className={`status-badge ${invoice.status}`}>
-          {invoice.status}
+          {invoice.status.toUpperCase()}
         </span>
       </div>
-      <p className="client-name">{invoice.clientName || "Unnamed Client"}</p>
-      <p className="invoice-total">
-        {symbol}
-        {grandTotal.toFixed(2)}
-      </p>
-      <p className="invoice-date">{invoice.date}</p>
-      {invoice.recurring && (
-        <span className="recurring-badge">🔄 Recurring</span>
-      )}
+
+      <div className="card-content">
+        <div className="invoice-meta">
+          <div className="meta-item">
+            <span className="meta-label">Amount</span>
+            <span className="meta-value">
+              {symbol}
+              {grandTotal.toFixed(2)}
+            </span>
+          </div>
+          <div className="meta-item">
+            <span className="meta-label">Date</span>
+            <span className="meta-value">📅 {invoice.date}</span>
+          </div>
+        </div>
+
+        {invoice.recurring && (
+          <div className="recurring-indicator">
+            <span className="recurring-badge">
+              🔄 Recurring {invoice.recurringInterval}
+            </span>
+          </div>
+        )}
+      </div>
+
       <div className="card-actions">
-        <button onClick={() => onEdit(invoice)} className="btn-edit">
-          Edit
+        <button
+          onClick={() => onEdit(invoice)}
+          className="btn btn-edit btn-small"
+        >
+          ✏️ Edit
         </button>
-        <button onClick={onPrint} className="btn-print">
-          Print
+        <button onClick={onPrint} className="btn btn-print btn-small">
+          🖨️ Print
         </button>
       </div>
     </div>

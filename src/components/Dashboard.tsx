@@ -19,28 +19,45 @@ export const Dashboard: React.FC<DashboardProps> = ({
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Modern Invoice Manager</h1>
-        <button onClick={onNewInvoice} className="btn-primary">
-          + New Invoice
+        <h1>📊 Invoice Manager</h1>
+        <button onClick={onNewInvoice} className="btn btn-primary">
+          ➕ Create New Invoice
         </button>
       </div>
 
       <div className="toolbar">
-        <button onClick={onSettings} className="btn-secondary">
+        <button onClick={onSettings} className="btn btn-secondary">
           ⚙️ Company Settings
         </button>
       </div>
 
-      <div className="invoices-grid">
-        {invoices.map((inv) => (
-          <InvoiceCard
-            key={inv.id}
-            invoice={inv}
-            onEdit={(invoice) => onEditInvoice(invoice)}
-            onPrint={onPrintInvoice}
-          />
-        ))}
-      </div>
+      {invoices.length === 0 ? (
+        <div className="empty-state">
+          <p className="empty-icon">📋</p>
+          <p className="empty-title">No invoices yet</p>
+          <p className="empty-description">
+            Start by creating your first invoice
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="invoices-header">
+            <p className="invoices-count">
+              Total Invoices: <strong>{invoices.length}</strong>
+            </p>
+          </div>
+          <div className="invoices-grid">
+            {invoices.map((inv) => (
+              <InvoiceCard
+                key={inv.id}
+                invoice={inv}
+                onEdit={(invoice) => onEditInvoice(invoice)}
+                onPrint={onPrintInvoice}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
