@@ -2,16 +2,20 @@ import { useState, useMemo } from "react";
 import "./App.css";
 import type { Invoice, InvoiceItem, CompanyInfo } from "./types";
 import { getInitialDates } from "./utils";
+import { Navigation } from "./components/Navigation";
 import { Dashboard } from "./components/Dashboard";
 import { InvoiceEditor } from "./components/InvoiceEditor";
 import { SettingsView } from "./components/SettingsView";
+import { ClientsView } from "./components/ClientsView";
+import { ContactsView } from "./components/ContactsView";
+import { AnalyticsView } from "./components/AnalyticsView";
 
 function App() {
   const initialDates = useMemo(() => getInitialDates(), []);
 
-  const [view, setView] = useState<"dashboard" | "editor" | "settings">(
-    "dashboard",
-  );
+  const [view, setView] = useState<
+    "dashboard" | "invoices" | "clients" | "contacts" | "analytics" | "settings"
+  >("dashboard");
 
   const [company, setCompany] = useState<CompanyInfo>({
     name: "Your Company",
@@ -96,7 +100,7 @@ function App() {
     };
     setInvoices([...invoices, newInvoice]);
     setInvoice(newInvoice);
-    setView("editor");
+    setView("invoices");
   };
 
   const saveInvoice = () => {
@@ -118,39 +122,51 @@ function App() {
 
   return (
     <div className="app">
-      {view === "dashboard" && (
-        <Dashboard
-          invoices={invoices}
-          onNewInvoice={createNewInvoice}
-          onEditInvoice={(inv) => {
-            setInvoice(inv);
-            setView("editor");
-          }}
-          onSettings={() => setView("settings")}
-          onPrintInvoice={handlePrint}
-        />
-      )}
+      <Navigation currentView={view} onNavigate={setView} />
 
-      {view === "editor" && (
-        <InvoiceEditor
-          invoice={invoice}
-          company={company}
-          onUpdateInvoice={updateInvoice}
-          onUpdateItem={updateItem}
-          onRemoveItem={removeItem}
-          onAddItem={addItem}
-          onSave={saveInvoice}
-          onBack={() => setView("dashboard")}
-        />
-      )}
+      <div className="main-content">
+        <div className="view-container">
+          {view === "dashboard" && (
+            <Dashboard
+              invoices={invoices}
+              onNewInvoice={createNewInvoice}
+              onEditInvoice={(inv) => {
+                setInvoice(inv);
+                setView("invoices");
+              }}
+              onSettings={() => setView("settings")}
+              onPrintInvoice={handlePrint}
+            />
+          )}
 
-      {view === "settings" && (
-        <SettingsView
-          company={company}
-          onCompanyChange={updateCompany}
-          onBack={() => setView("dashboard")}
-        />
-      )}
+          {view === "invoices" && (
+            <InvoiceEditor
+              invoice={invoice}
+              company={company}
+              onUpdateInvoice={updateInvoice}
+              onUpdateItem={updateItem}
+              onRemoveItem={removeItem}
+              onAddItem={addItem}
+              onSave={saveInvoice}
+              onBack={() => setView("dashboard")}
+            />
+          )}
+
+          {view === "clients" && <ClientsView />}
+
+          {view === "contacts" && <ContactsView />}
+
+          {view === "analytics" && <AnalyticsView />}
+
+          {view === "settings" && (
+            <SettingsView
+              company={company}
+              onCompanyChange={updateCompany}
+              onBack={() => setView("dashboard")}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
