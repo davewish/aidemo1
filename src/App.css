@@ -76,6 +76,44 @@ html, body, #root {
 /* ===========================
    SIDEBAR NAVIGATION
    =========================== */
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.mobile-menu-toggle:hover {
+  background: var(--primary-dark);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
 .sidebar-nav {
   width: 280px;
   background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
@@ -2367,28 +2405,47 @@ textarea:focus {
 }
 
 @media (max-width: 768px) {
+  /* Show hamburger menu on mobile */
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .mobile-menu-overlay {
+    display: block;
+  }
+
+  /* Hide sidebar by default on mobile */
   .sidebar-nav {
-    width: 0;
+    width: 100%;
     position: fixed;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     height: 100vh;
+    z-index: 998;
   }
 
+  /* Show sidebar when active */
   .sidebar-nav.active {
     width: 100%;
     transform: translateX(0);
   }
 
+  /* Adjust main content */
   .main-content {
     margin-left: 0;
-    padding: 20px;
+    padding: 60px 20px 20px 20px;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
   }
 
   .view-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    margin-top: 16px;
   }
 
   .view-actions {
@@ -2400,22 +2457,17 @@ textarea:focus {
     width: 100%;
   }
 
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-
   .dashboard-header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
   }
 
-  .dashboard-header h1 {
+  .dashboard-header button {
     width: 100%;
   }
 
   .toolbar {
-    width: 100%;
+    flex-direction: column;
   }
 
   .toolbar button {
@@ -2425,13 +2477,16 @@ textarea:focus {
   .editor-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
+    margin-top: 16px;
   }
 
   .editor-header h1 {
-    width: 100%;
+    order: 2;
   }
 
   .editor-actions {
+    order: 3;
     width: 100%;
     flex-direction: column;
   }
@@ -2440,72 +2495,37 @@ textarea:focus {
     width: 100%;
   }
 
-  .invoice-preview {
-    padding: 20px;
-  }
-
-  .settings-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .settings-header h1 {
-    width: 100%;
-  }
-
-  .settings-footer {
-    flex-direction: column;
-  }
-
-  .settings-footer button {
-    width: 100%;
-  }
-
-  .branding-content {
+  .invoices-grid {
     grid-template-columns: 1fr;
   }
 
-  .logo-preview-large {
-    height: 150px;
+  .card {
+    border-radius: 8px;
+  }
+
+  .line-items-section {
+    padding: 16px;
+  }
+
+  table.items-table {
+    font-size: 12px;
+  }
+
+  table.items-table th,
+  table.items-table td {
+    padding: 8px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
   }
 
-  .branding-section {
-    padding: 16px;
-  }
-
-  .stats-grid {
+  .settings-grid {
     grid-template-columns: 1fr;
   }
 
-  .reports-grid {
+  .branding-content {
     grid-template-columns: 1fr;
-  }
-
-  .table {
-    font-size: 13px;
-  }
-
-  .table-header th,
-  .table-body td {
-    padding: 12px 8px;
-  }
-
-  .modal {
-    width: 95%;
-    max-height: 95vh;
-  }
-
-  .form-group.inline {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .form-group.inline .form-label {
-    min-width: auto;
   }
 }
 
