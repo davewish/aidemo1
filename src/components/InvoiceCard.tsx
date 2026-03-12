@@ -75,11 +75,11 @@ export const InvoiceCard: React.FC<InvoiceCardProps> = ({
       <div className="card-actions">
         <button
           onClick={() => onEdit(invoice)}
-          className="btn btn-edit btn-small"
+          className="btn btn-secondary btn-small"
         >
           ✏️ Edit
         </button>
-        <button onClick={onPrint} className="btn btn-print btn-small">
+        <button onClick={onPrint} className="btn btn-primary btn-small">
           🖨️ Print
         </button>
       </div>

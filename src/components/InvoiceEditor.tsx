@@ -45,10 +45,10 @@ export const InvoiceEditor: React.FC<InvoiceEditorProps> = ({
         </button>
         <h1>✏️ Edit Invoice</h1>
         <div className="editor-actions">
-          <button onClick={onSave} className="btn btn-save">
+          <button onClick={onSave} className="btn btn-secondary">
             💾 Save Invoice
           </button>
-          <button onClick={handlePrint} className="btn btn-print">
+          <button onClick={handlePrint} className="btn btn-primary">
             🖨️ Print
           </button>
         </div>
@@ -83,7 +83,7 @@ export const InvoiceEditor: React.FC<InvoiceEditorProps> = ({
           onRemoveItem={onRemoveItem}
         />
 
-        <button onClick={onAddItem} className="btn btn-add-item">
+        <button onClick={onAddItem} className="btn btn-secondary">
           ➕ Add Line Item
         </button>
 
