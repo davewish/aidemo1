@@ -1,42 +1,48 @@
 import { useState, useMemo } from "react";
 import "./App.css";
-
-interface InvoiceItem {
-  id: string;
-  description: string;
-  quantity: number;
-  rate: number;
-}
-
-interface Invoice {
-  invoiceNumber: string;
-  clientName: string;
-  clientEmail: string;
-  date: string;
-  dueDate: string;
-  items: InvoiceItem[];
-}
+import type { Invoice, InvoiceItem, CompanyInfo } from "./types";
+import { getInitialDates } from "./utils";
+import { Dashboard } from "./components/Dashboard";
+import { InvoiceEditor } from "./components/InvoiceEditor";
+import { SettingsView } from "./components/SettingsView";
 
 function App() {
-  const getInitialDates = () => {
-    const today = new Date();
-    const dueDate = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-    return {
-      date: today.toISOString().split("T")[0],
-      dueDate: dueDate.toISOString().split("T")[0],
-    };
-  };
-
   const initialDates = useMemo(() => getInitialDates(), []);
 
-  const [invoice, setInvoice] = useState<Invoice>({
-    invoiceNumber: "INV-001",
-    clientName: "",
-    clientEmail: "",
-    date: initialDates.date,
-    dueDate: initialDates.dueDate,
-    items: [{ id: "1", description: "", quantity: 1, rate: 0 }],
+  const [view, setView] = useState<"dashboard" | "editor" | "settings">(
+    "dashboard"
+  );
+
+  const [company, setCompany] = useState<CompanyInfo>({
+    name: "Your Company",
+    email: "contact@company.com",
+    phone: "+1 (555) 000-0000",
+    address: "123 Business St, City, State 12345",
+    logo: "",
   });
+
+  const [invoices, setInvoices] = useState<Invoice[]>([
+    {
+      id: "inv-1",
+      invoiceNumber: "INV-001",
+      clientName: "",
+      clientEmail: "",
+      clientAddress: "",
+      date: initialDates.date,
+      dueDate: initialDates.dueDate,
+      items: [{ id: "1", description: "", quantity: 1, rate: 0, discount: 0 }],
+      currency: "USD",
+      taxRate: 10,
+      discount: 0,
+      status: "draft",
+      recurring: false,
+      recurringInterval: "monthly",
+      template: "modern",
+      notes: "",
+    },
+  ]);
+
+  const [invoice, setInvoice] = useState<Invoice>(invoices[0]);
 
   const addItem = () => {
     const newItem: InvoiceItem = {
@@ -44,6 +50,7 @@ function App() {
       description: "",
       quantity: 1,
       rate: 0,
+      discount: 0,
     };
     setInvoice({ ...invoice, items: [...invoice.items, newItem] });
   };
@@ -58,164 +65,92 @@ function App() {
   const updateItem = (
     id: string,
     field: keyof InvoiceItem,
-    value: string | number,
+    value: string | number
   ) => {
     setInvoice({
       ...invoice,
       items: invoice.items.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item,
+        item.id === id ? { ...item, [field]: value } : item
       ),
     });
   };
 
-  const calculateTotal = () => {
-    return invoice.items.reduce(
-      (sum, item) => sum + item.quantity * item.rate,
-      0,
-    );
+  const createNewInvoice = () => {
+    const newInvoice: Invoice = {
+      id: `inv-${Date.now()}`,
+      invoiceNumber: `INV-${String(invoices.length + 1).padStart(3, "0")}`,
+      clientName: "",
+      clientEmail: "",
+      clientAddress: "",
+      date: initialDates.date,
+      dueDate: initialDates.dueDate,
+      items: [{ id: "1", description: "", quantity: 1, rate: 0, discount: 0 }],
+      currency: "USD",
+      taxRate: 10,
+      discount: 0,
+      status: "draft",
+      recurring: false,
+      recurringInterval: "monthly",
+      template: "modern",
+      notes: "",
+    };
+    setInvoices([...invoices, newInvoice]);
+    setInvoice(newInvoice);
+    setView("editor");
   };
 
-  const total = calculateTotal();
-  const tax = total * 0.1;
-  const grandTotal = total + tax;
+  const saveInvoice = () => {
+    setInvoices(invoices.map((inv) => (inv.id === invoice.id ? invoice : inv)));
+    setView("dashboard");
+  };
+
+  const updateInvoice = (updates: Partial<Invoice>) => {
+    setInvoice({ ...invoice, ...updates });
+  };
+
+  const updateCompany = (updates: Partial<CompanyInfo>) => {
+    setCompany({ ...company, ...updates });
+  };
 
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="invoice-container">
-      <div className="invoice-header">
-        <h1>Invoice Generator</h1>
-        <button onClick={handlePrint} className="btn-print">
-          Print Invoice
-        </button>
-      </div>
+    <div className="app">
+      {view === "dashboard" && (
+        <Dashboard
+          invoices={invoices}
+          onNewInvoice={createNewInvoice}
+          onEditInvoice={(inv) => {
+            setInvoice(inv);
+            setView("editor");
+          }}
+          onSettings={() => setView("settings")}
+          onPrintInvoice={handlePrint}
+        />
+      )}
 
-      <div className="invoice-box">
-        <div className="invoice-top">
-          <div className="invoice-info">
-            <h2>Invoice</h2>
-            <p>Invoice #: {invoice.invoiceNumber}</p>
-            <p>Date: {invoice.date}</p>
-            <p>Due Date: {invoice.dueDate}</p>
-          </div>
-        </div>
+      {view === "editor" && (
+        <InvoiceEditor
+          invoice={invoice}
+          company={company}
+          onUpdateInvoice={updateInvoice}
+          onUpdateItem={updateItem}
+          onRemoveItem={removeItem}
+          onAddItem={addItem}
+          onSave={saveInvoice}
+          onBack={() => setView("dashboard")}
+        />
+      )}
 
-        <div className="client-section">
-          <div className="form-group">
-            <label>Client Name</label>
-            <input
-              type="text"
-              value={invoice.clientName}
-              onChange={(e) =>
-                setInvoice({ ...invoice, clientName: e.target.value })
-              }
-              placeholder="Enter client name"
-            />
-          </div>
-          <div className="form-group">
-            <label>Client Email</label>
-            <input
-              type="email"
-              value={invoice.clientEmail}
-              onChange={(e) =>
-                setInvoice({ ...invoice, clientEmail: e.target.value })
-              }
-              placeholder="Enter client email"
-            />
-          </div>
-        </div>
-
-        <table className="items-table">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Quantity</th>
-              <th>Rate</th>
-              <th>Amount</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice.items.map((item) => (
-              <tr key={item.id}>
-                <td>
-                  <input
-                    type="text"
-                    value={item.description}
-                    onChange={(e) =>
-                      updateItem(item.id, "description", e.target.value)
-                    }
-                    placeholder="Service or product"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateItem(
-                        item.id,
-                        "quantity",
-                        parseFloat(e.target.value) || 0,
-                      )
-                    }
-                    min="0"
-                    step="1"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={item.rate}
-                    onChange={(e) =>
-                      updateItem(
-                        item.id,
-                        "rate",
-                        parseFloat(e.target.value) || 0,
-                      )
-                    }
-                    min="0"
-                    step="0.01"
-                    placeholder="0.00"
-                  />
-                </td>
-                <td className="amount">
-                  ${(item.quantity * item.rate).toFixed(2)}
-                </td>
-                <td>
-                  <button
-                    onClick={() => removeItem(item.id)}
-                    className="btn-remove"
-                  >
-                    Remove
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <button onClick={addItem} className="btn-add">
-          + Add Item
-        </button>
-
-        <div className="invoice-totals">
-          <div className="total-row">
-            <span>Subtotal:</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
-          <div className="total-row">
-            <span>Tax (10%):</span>
-            <span>${tax.toFixed(2)}</span>
-          </div>
-          <div className="total-row grand-total">
-            <span>Total:</span>
-            <span>${grandTotal.toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
+      {view === "settings" && (
+        <SettingsView
+          company={company}
+          onCompanyChange={updateCompany}
+          onBack={() => setView("dashboard")}
+        />
+      )}
     </div>
   );
 }
