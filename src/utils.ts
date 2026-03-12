@@ -1,4 +1,4 @@
-import { InvoiceItem } from "./types";
+import type { InvoiceItem } from "./types";
 
 const currencySymbols: { [key: string]: string } = {
   USD: "$",

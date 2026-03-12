@@ -10,7 +10,7 @@ function App() {
   const initialDates = useMemo(() => getInitialDates(), []);
 
   const [view, setView] = useState<"dashboard" | "editor" | "settings">(
-    "dashboard"
+    "dashboard",
   );
 
   const [company, setCompany] = useState<CompanyInfo>({
@@ -65,12 +65,12 @@ function App() {
   const updateItem = (
     id: string,
     field: keyof InvoiceItem,
-    value: string | number
+    value: string | number,
   ) => {
     setInvoice({
       ...invoice,
       items: invoice.items.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
+        item.id === id ? { ...item, [field]: value } : item,
       ),
     });
   };
